@@ -1,13 +1,59 @@
 <!doctype html>
 <html lang="en">
   <head>
+    <!-- Required meta tags -->
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <title>Image search</title>
+    <title>Pictures by colors</title>
+    <style>
+      *{
+        font-family:Algerian;
+      }
+      .button {
+        background-color: #e7e7e7; /* Gray */
+        border-style: solid;
+        border-color: #AAB7B8;
+        color: black;
+        padding: 10px 40px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+      }
+      div.gallery {
+        margin: 5px;
+        border: 1px solid #ccc;
+        float: left;
+        width: 180px;
+      }
+
+      div.gallery:hover {
+        border: 1px solid #777;
+      }
+
+      div.gallery img {
+        width: 100%;
+        height: auto;
+      }
+
+      div.desc {
+        padding: 15px;
+        text-align: center;
+      }
+      .page-title{
+            width: 100%;
+            text-align: center;
+            background-color : lightgray;
+        }
+    </style>
   </head>
   <body>
+
+    <div class='page-title'>
+      <h1>Choose colors to search images</h1>
+    </div>
+
     <div>
-      <input name="Color Picker" type="color"/> </br>
+      <p>Pick Color: <input name="Color Picker" type="color"/> </p>
     </div>
     <div>
       <a href="test_file.zip" download>Download File</a>
@@ -18,5 +64,30 @@
       <input type="file" name="files" multiple>
       <button type="submit" formaction="/api/upload/">Upload</button>
     </form>
+    <div>
+      <div class="gallery">
+        <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU" alt="Cinque Terre" width="600" height="400">
+        </a>
+      </div>
+      
+      <div class="gallery">
+        <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU" alt="Forest" width="600" height="400">
+        </a>
+      </div>
+      
+      <div class="gallery">
+        <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU" alt="Northern Lights" width="600" height="400">
+        </a>
+      </div>
+      
+      <div class="gallery">
+        <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU">
+          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU" alt="Mountains" width="600" height="400">
+        </a>
+      </div>
+    </div>
   </body>
 </html>
