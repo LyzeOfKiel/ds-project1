@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Image search</title>
+  </head>
+  <body>
+    <div>
+      <input name="Color Picker" type="color"/> </br>
+    </div>
+    <div>
+      <a href="test_file.zip" download>Download File</a>
+    </div>
+    
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <input type="file" name="files" multiple>
+      <button type="submit" formaction="/api/upload/">Upload</button>
+    </form>
+  </body>
+</html>
