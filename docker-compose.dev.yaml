@@ -1,0 +1,59 @@
+version: "3.7"
+
+x-django-common-volumes: &django-common-volumes
+  - "./django:/app"
+
+x-django-common-environment: &django-common-environment
+  MODE: "dev"
+  DJANGO_DEBUG: "True"
+  DJANGO_APP_NAME: "ds"
+  DJANGO_SECRET_KEY: "k(^p-ii4g+bs33%grg#d==56_3z*xy==rwz_m2bzb+l6+&y5^"
+  DJANGO_ALLOWED_HOSTS: "localhost,127.0.0.1"
+  DJANGO_LOGGING_LEVEL: "DEBUG"
+
+  DJANGO_DATABASE_NAME: "pgdb"
+  DJANGO_DATABASE_USER: "pguser"
+  DJANGO_DATABASE_PASSWORD: "pgpassword"
+  DJANGO_DATABASE_HOST: "postgres"
+  DJANGO_DATABASE_PORT: "5432"
+
+
+services:
+  django:
+    build: django
+    image: "admin/django"
+    command: "python manage.py runserver 0.0.0.0:8000"
+    volumes: *django-common-volumes
+    ports:
+      - "127.0.0.1:8000:8000"
+    environment:
+      <<: *django-common-environment
+      UWSGI_PROCESSES: "2"
+      UWSGI_THREADS: "2"
+      UWSGI_HARAKIRI: "60"
+      UWSGI_MAX_REQUESTS: "100"
+
+  postgres:
+    image: "postgres:12"
+    volumes:
+      - "postgres-data:/var/lib/postgresql/data"
+    environment:
+      - "PGDATA=/var/lib/postgresql/data/pgdata"
+      - "POSTGRES_DB=pgdb"
+      - "POSTGRES_USER=pguser"
+      - "POSTGRES_PASSWORD=pgpassword"
+    restart: "no"
+
+
+  s3:
+    image: "minio/minio:latest"
+    command: "server /data"
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: AKIAIOSFODNN7EXAMPLE
+      MINIO_SECRET_KEY: wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+
+
+volumes:
+  postgres-data:
