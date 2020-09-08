@@ -3,3 +3,6 @@ django-cors-headers~=3.2.1
 psycopg2-binary~=2.8.4
 uwsgi~=2.0.18
 django_replicated
+elasticsearch
+boto3
+colorthief

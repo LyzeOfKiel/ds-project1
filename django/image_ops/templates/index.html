@@ -1,93 +1,224 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <title>Pictures by colors</title>
-    <style>
-      *{
-        font-family:Algerian;
-      }
-      .button {
-        background-color: #e7e7e7; /* Gray */
-        border-style: solid;
-        border-color: #AAB7B8;
-        color: black;
-        padding: 10px 40px;
-        text-align: center;
-        text-decoration: none;
-        display: inline-block;
-        font-size: 16px;
-      }
-      div.gallery {
-        margin: 5px;
-        border: 1px solid #ccc;
-        float: left;
-        width: 180px;
-      }
 
-      div.gallery:hover {
-        border: 1px solid #777;
-      }
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <title>Pictures by colors</title>
+  <style>
+    * {
+      font-family: Algerian;
+    }
 
-      div.gallery img {
-        width: 100%;
-        height: auto;
-      }
+    .button {
+      background-color: #e7e7e7;
+      /* Gray */
+      border-style: solid;
+      border-color: #AAB7B8;
+      color: black;
+      padding: 10px 40px;
+      text-align: center;
+      text-decoration: none;
+      display: inline-block;
+      font-size: 16px;
+    }
 
-      div.desc {
-        padding: 15px;
-        text-align: center;
-      }
-      .page-title{
-            width: 100%;
-            text-align: center;
-            background-color : lightgray;
-        }
-    </style>
-  </head>
-  <body>
+    div.gallery {
+      margin: 5px;
+      border: 1px solid #ccc;
+      float: left;
+      width: 180px;
+    }
 
-    <div class='page-title'>
-      <h1>Choose colors to search images</h1>
+    div.gallery:hover {
+      border: 1px solid #777;
+    }
+
+    div.gallery img {
+      width: 100%;
+      height: auto;
+    }
+
+    div.desc {
+      padding: 15px;
+      text-align: center;
+    }
+
+    .page-title {
+      text-align: center;
+      background-color: #fff35194;
+    }
+
+    .top-bottom-auto {
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    hr.blue {
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+      border: 0;
+      border-top: 1px solid rgba(151, 149, 149, 0.795);
+    }
+
+    input[type="color"] {
+      opacity: 0;
+      display: block;
+      width: 32px;
+      height: 32px;
+      border: none;
+    }
+
+    #color-picker-wrapper {
+      float: left;
+    }
+  </style>
+
+  <!-- CSS only -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+    integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  <!-- JS, Popper.js, and jQuery -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+    integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+    integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+    crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+    integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+    crossorigin="anonymous"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="p-4 p-md-5 rounded page-title">
+      <div class="row">
+        <div class="col-md-6 px-0 top-bottom-auto">
+          <h1 class="display-4 font-italic">Choose your color</h1>
+          <h3 class="">This is a tool to search images by a color. You can use our preloaded pictures as well as upload
+            you own favourite photos!</h3>
+        </div>
+        <div class="col-md-6 px-0">
+          <div class="rounded">
+            <h2>1. Choose a color to search images</h2>
+          </div>
+
+          <div class="row justify-content-center">
+            <div id="color-picker-wrapper">
+              <input id="color-picker" value="#45fffa" name="Color Picker" type="color" />
+            </div>
+          </div>
+        <div class="rounded">
+          <h2>2. Click search</h2>
+        </div>
+        <button class="button rounded" onclick="filter()">Search</button>
+      </div>
     </div>
-
+    <hr class="blue">
+    </hr>
     <div>
-      <p>Pick Color: <input name="Color Picker" type="color"/> </p>
+      <h2>You can upload your pictures and try to find them, too!</h2>
+
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <form method="post" enctype="multipart/form-data">
+            <div class="input-group">
+              <div class="input-group-prepend">
+                {% csrf_token %}
+                <button class="input-group-text rounded-left" type="submit" formaction="/api/upload/">Upload</button>
+              </div>
+              <div class="custom-file">
+                <input id="input" class="custom-file-input" type="file" name="files" multiple
+                  accept="image/png, image/jpeg">
+                <label class="text-left custom-file-label" for="input">Choose pictures</label>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- <form method="post" enctype="multipart/form-data">
+          {% csrf_token %}
+          <input type="file" name="files" multiple>
+          <button type="submit" formaction="/api/upload/">Upload</button>
+        </form> -->
     </div>
-    <div>
-      <a href="test_file.zip" download>Download File</a>
-    </div>
-    
-    <form method="post" enctype="multipart/form-data">
-      {% csrf_token %}
-      <input type="file" name="files" multiple>
-      <button type="submit" formaction="/api/upload/">Upload</button>
-    </form>
-    <div>
-      <div class="gallery">
-        <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU" alt="Cinque Terre" width="600" height="400">
-        </a>
-      </div>
-      
-      <div class="gallery">
-        <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU" alt="Forest" width="600" height="400">
-        </a>
-      </div>
-      
-      <div class="gallery">
-        <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU" alt="Northern Lights" width="600" height="400">
-        </a>
-      </div>
-      
-      <div class="gallery">
-        <a target="_blank" href="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU">
-          <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRyzVbc-wXP3bPTvrk8PcBVTI9jZB_mLaHEjA&usqp=CAU" alt="Mountains" width="600" height="400">
-        </a>
-      </div>
-    </div>
-  </body>
+  </div>
+
+  </div>
+  <script>
+    // document.getElementById("colorPicker").addEventListener("change", filterPictures, false);
+
+
+    var color_picker = document.getElementById("color-picker");
+    var color_picker_wrapper = document.getElementById("color-picker-wrapper");
+    color_picker.onchange = function () {
+      color_picker_wrapper.style.backgroundColor = color_picker.value;
+    }
+    color_picker_wrapper.style.backgroundColor = color_picker.value;
+
+
+    $(".custom-file-input").on("change", function () {
+      const files = document.getElementById("input").files;
+      let label;
+      if (files.length == 0) return;
+      if (files.length == 1) label = files[0].name;
+      else label = `${files.length} pictures`
+      $(this).siblings(".custom-file-label").addClass("selected").html(label);
+    });
+
+    function filter() {
+      const hsl = hexToHSL(document.getElementById("color-picker").value)
+      const params = `h=${hsl.h}&s=${hsl.s}&l=${hsl.l}`
+      window.location.href = `http://127.0.0.1:8000/api/filter?${params}`
+    }
+
+    function hexToHSL(H) {
+      // Convert hex to RGB first
+      let r = 0, g = 0, b = 0;
+      if (H.length == 4) {
+        r = "0x" + H[1] + H[1];
+        g = "0x" + H[2] + H[2];
+        b = "0x" + H[3] + H[3];
+      } else if (H.length == 7) {
+        r = "0x" + H[1] + H[2];
+        g = "0x" + H[3] + H[4];
+        b = "0x" + H[5] + H[6];
+      }
+      // Then to HSL
+      r /= 255;
+      g /= 255;
+      b /= 255;
+      let cmin = Math.min(r, g, b),
+        cmax = Math.max(r, g, b),
+        delta = cmax - cmin,
+        h = 0,
+        s = 0,
+        l = 0;
+
+      if (delta == 0)
+        h = 0;
+      else if (cmax == r)
+        h = ((g - b) / delta) % 6;
+      else if (cmax == g)
+        h = (b - r) / delta + 2;
+      else
+        h = (r - g) / delta + 4;
+
+      h = Math.round(h * 60);
+
+      if (h < 0)
+        h += 360;
+
+      l = (cmax + cmin) / 2;
+      s = delta == 0 ? 0 : delta / (1 - Math.abs(2 * l - 1));
+      s = +(s * 100).toFixed(1);
+      l = +(l * 100).toFixed(1);
+
+      return { h, s, l };
+    }
+  </script>
+</body>
+
 </html>

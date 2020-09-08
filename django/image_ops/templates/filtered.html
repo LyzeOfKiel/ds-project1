@@ -1,0 +1,15 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Filter</title>
+</head>
+<body>
+    {% for pic in pictures %} 
+    <div class="col-md-4"> 
+            {{ pic.name }} 
+            <img src="data:image/png;base64,{{ pic.bytes }}"/>
+    </div> 
+    {% endfor %} 
+</body>
+</html>
