@@ -89,7 +89,5 @@ def search(es, h, s, l):
         'query': QUERY
     }
     res = es.search(body=query_conf, index='pictures')['hits']['hits']
-    for o in res:
-        print(o['_score'], o['_source']['file_name'])
-    print(res)
+
     return res

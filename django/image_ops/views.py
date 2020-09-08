@@ -42,6 +42,29 @@ def initS3():
     )
 
 
+def put_to_elastic(path):
+    color_thief = ColorThief(path)
+    try:
+        palette_rgb = color_thief.get_palette(color_count=10)
+    except:
+        print('error')
+
+    palette_hls = [rgb_to_hls_scaled(*c) for c in palette_rgb]
+
+    es = Elasticsearch('es')
+    body = {
+        'bucket': BUCKET_NAME,
+        'file_name': file.name,
+        'colour_list': [{
+            'h': c[0],
+            'l': c[1],
+            's': c[2],
+        } for c in palette_hls]
+    }
+    r = es.index(index=BUCKET_NAME, body=body)
+    assert r['result'] == 'created'
+
+
 def upload(request):
     s3 = initS3()
 
@@ -60,28 +83,9 @@ def upload(request):
 
         s3.fput_object(BUCKET_NAME, file.name, tmp_path)
 
-        color_thief = ColorThief(tmp_path)
-        try:
-            palette_rgb = color_thief.get_palette(color_count=10)
-        except:
-            print('error')
+        put_to_elastic(tmp_path)
 
         os.remove(tmp_path)
-
-        palette_hls = [rgb_to_hls_scaled(*c) for c in palette_rgb]
-
-        es = Elasticsearch('es')
-        body = {
-            'bucket': BUCKET_NAME,
-            'file_name': file.name,
-            'colour_list': [{
-                'h': c[0],
-                'l': c[1],
-                's': c[2],
-            } for c in palette_hls]
-        }
-        r = es.index(index=BUCKET_NAME, body=body)
-        assert r['result'] == 'created'
 
     return redirect('index')
 
@@ -90,8 +94,6 @@ def index(request):
     index = 'pictures'
 
     es = Elasticsearch('es')
-
-    # es.indices.delete(index='pictures', ignore=[400, 404])
 
     mapping = {
         'mappings': {
@@ -125,6 +127,7 @@ def filter(request):
             'name': file_name,
         })
     template = loader.get_template('filtered.html')
+
     return HttpResponse(template.render({
         'pictures': pictures
     }, request))
