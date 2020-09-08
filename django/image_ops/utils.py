@@ -93,5 +93,3 @@ def search(es, h, s, l):
         print(o['_score'], o['_source']['file_name'])
     print(res)
     return res
-
-

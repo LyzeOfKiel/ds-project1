@@ -137,22 +137,13 @@
           </form>
         </div>
       </div>
-
-      <!-- <form method="post" enctype="multipart/form-data">
-          {% csrf_token %}
-          <input type="file" name="files" multiple>
-          <button type="submit" formaction="/api/upload/">Upload</button>
-        </form> -->
     </div>
   </div>
 
   </div>
   <script>
-    // document.getElementById("colorPicker").addEventListener("change", filterPictures, false);
-
-
-    var color_picker = document.getElementById("color-picker");
-    var color_picker_wrapper = document.getElementById("color-picker-wrapper");
+    const color_picker = document.getElementById("color-picker");
+    const color_picker_wrapper = document.getElementById("color-picker-wrapper");
     color_picker.onchange = function () {
       color_picker_wrapper.style.backgroundColor = color_picker.value;
     }
