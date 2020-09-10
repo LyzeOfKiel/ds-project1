@@ -42,27 +42,26 @@ def initS3():
     )
 
 
-def put_to_elastic(path):
+def put_to_elastic(path, name):
     color_thief = ColorThief(path)
     try:
         palette_rgb = color_thief.get_palette(color_count=10)
+        palette_hls = [rgb_to_hls_scaled(*c) for c in palette_rgb]
+
+        es = Elasticsearch('es')
+        body = {
+            'bucket': BUCKET_NAME,
+            'file_name': name,
+            'colour_list': [{
+                'h': c[0],
+                'l': c[1],
+                's': c[2],
+            } for c in palette_hls]
+        }
+        r = es.index(index=BUCKET_NAME, body=body)
+        assert r['result'] == 'created'
     except:
         print('error')
-
-    palette_hls = [rgb_to_hls_scaled(*c) for c in palette_rgb]
-
-    es = Elasticsearch('es')
-    body = {
-        'bucket': BUCKET_NAME,
-        'file_name': file.name,
-        'colour_list': [{
-            'h': c[0],
-            'l': c[1],
-            's': c[2],
-        } for c in palette_hls]
-    }
-    r = es.index(index=BUCKET_NAME, body=body)
-    assert r['result'] == 'created'
 
 
 def upload(request):
@@ -83,7 +82,7 @@ def upload(request):
 
         s3.fput_object(BUCKET_NAME, file.name, tmp_path)
 
-        put_to_elastic(tmp_path)
+        put_to_elastic(tmp_path, file.name)
 
         os.remove(tmp_path)
 
