@@ -27,7 +27,7 @@ SECRET_KEY = '03*1-cc&rty_@lgo%dq1rm08yo(*jsdzuk^g6yrkzp!9^ecn8z'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -55,12 +55,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    # 'django_replicated.middleware.ReplicationMiddleware',
 ]
-
-# MIDDLEWARE_CLASSES = [
-#     'django_replicated.middleware.ReplicationMiddleware',
-# ]
 
 ROOT_URLCONF = 'ds.urls'
 
@@ -97,11 +92,6 @@ DATABASES = {
     }
 
 }
-
-# REPLICATED_DATABASE_SLAVES = ['slave1', 'slave2']
-# DATABASE_ROUTERS = ['django_replicated.router.ReplicationRouter']
-# REPLICATED_DATABASE_DOWNTIME = 20
-
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
